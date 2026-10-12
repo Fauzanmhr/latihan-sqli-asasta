@@ -423,6 +423,6 @@ Seluruh SQL di aplikasi ini dibuat dengan penggabungan string, bukan prepared st
 
 Perbaikan kiranya: gunakan parameterized query (`pool.query(sql, [params])`), validasi `:id` agar berupa angka, dan whitelist nama tabel untuk export.
 
-Dokumen pendamping (langkah deploy dan pembahasan SQLi) ada di [`deploy-and-sqli.md`](deploy-and-sqli.md) dan [`deploy-and-sqli.pdf`](deploy-and-sqli.pdf).
+Panduan langkah deploy sekaligus cara mengotomatiskan pengujian celah di atas dengan SQLMap ada di [`deploy-and-sqli.md`](deploy-and-sqli.md).
 
 > ⚠️ Sekali lagi: aplikasi ini sengaja rentan. Jangan pernah meniru polanya di lingkungan production.

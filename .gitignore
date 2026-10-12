@@ -3,3 +3,6 @@ node_modules/
 *.log
 .DS_Store
 npm-debug.log*
+
+# Hasil ekspor PDF (markdown adalah sumbernya)
+*.pdf
