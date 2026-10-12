@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Tagihan — PDAM Tirta Asasta Depok</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <nav class="bg-white shadow-sm border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="flex justify-between h-16 items-center gap-2">
+        <a href="/dashboard" class="text-base sm:text-lg font-bold text-blue-800 truncate">PDAM Tirta Asasta Depok</a>
+        <div class="flex items-center gap-2 sm:gap-4 shrink-0">
+          <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full whitespace-nowrap"><%= user.role %></span>
+          <span class="text-xs sm:text-sm text-gray-600 hidden sm:inline truncate max-w-[120px]"><%= user.nama_lengkap %></span>
+          <a href="/logout" class="text-xs sm:text-sm text-red-500 hover:text-red-700 whitespace-nowrap">Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
+    <a href="javascript:history.back()" class="text-sm text-blue-600 hover:text-blue-800 mb-3 sm:mb-4 inline-block">← Kembali</a>
+
+    <div class="bg-white rounded-xl shadow-sm border p-4 sm:p-6 md:p-8">
+      <div class="text-center border-b pb-3 sm:pb-4 mb-4 sm:mb-6">
+        <h2 class="text-base sm:text-lg font-bold text-gray-800">PDAM Tirta Asasta Depok (Perseroda)</h2>
+        <p class="text-xs sm:text-sm text-gray-500">Detail Tagihan Air Minum</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-y-2 sm:gap-y-3 text-xs sm:text-sm mb-4 sm:mb-6">
+        <div><span class="text-gray-500">Pelanggan:</span><span class="font-medium ml-1.5 sm:ml-2"><%= bill.nama %></span></div>
+        <div><span class="text-gray-500">No. Sambung:</span><span class="font-mono ml-1.5 sm:ml-2"><%= bill.no_sambung %></span></div>
+        <div><span class="text-gray-500">Periode:</span><span class="font-medium ml-1.5 sm:ml-2"><%= bill.bulan %>/<%= bill.tahun %></span></div>
+        <div>
+          <span class="text-gray-500">Status:</span>
+          <% if (bill.status_bayar === 'lunas') { %>
+            <span class="text-green-600 font-medium ml-1.5 sm:ml-2">✓ Lunas</span>
+          <% } else if (bill.status_bayar === 'denda') { %>
+            <span class="text-yellow-600 font-medium ml-1.5 sm:ml-2">⏳ Denda</span>
+          <% } else { %>
+            <span class="text-red-600 font-medium ml-1.5 sm:ml-2">✗ Belum Dibayar</span>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="bg-gray-50 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
+        <table class="w-full text-xs sm:text-sm">
+          <tr>
+            <td class="py-1.5 sm:py-2 text-gray-600">Pemakaian Air</td>
+            <td class="py-1.5 sm:py-2 text-right"><%= bill.pemakaian_m3 %> m³</td>
+          </tr>
+          <tr>
+            <td class="py-1.5 sm:py-2 text-gray-600">Tagihan Pokok</td>
+            <td class="py-1.5 sm:py-2 text-right">Rp <%= Number(bill.tagihan).toLocaleString('id-ID') %></td>
+          </tr>
+          <% if (bill.denda > 0) { %>
+          <tr>
+            <td class="py-1.5 sm:py-2 text-gray-600">Denda</td>
+            <td class="py-1.5 sm:py-2 text-right text-red-600">Rp <%= Number(bill.denda).toLocaleString('id-ID') %></td>
+          </tr>
+          <% } %>
+          <tr class="border-t font-bold">
+            <td class="py-1.5 sm:py-2 text-gray-800">Total</td>
+            <td class="py-1.5 sm:py-2 text-right">Rp <%= Number(bill.tagihan + bill.denda).toLocaleString('id-ID') %></td>
+          </tr>
+        </table>
+      </div>
+
+      <% if (bill.tgl_bayar) { %>
+      <p class="text-xs sm:text-sm text-gray-500 text-center">Dibayar pada: <%= bill.tgl_bayar %></p>
+      <% } else { %>
+      <div class="text-center mt-4 sm:mt-6">
+        <a href="/bill/<%= bill.id %>/pay" class="block md:inline-block bg-green-600 hover:bg-green-700 text-white font-medium px-6 sm:px-8 py-2.5 rounded-lg transition text-sm sm:text-base">💰 Bayar Tagihan</a>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>

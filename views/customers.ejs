@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Pelanggan — PDAM Tirta Asasta Depok</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <nav class="bg-white shadow-sm border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between py-3 sm:h-16 items-center">
+        <a href="/dashboard" class="text-base sm:text-lg font-bold text-blue-800">PDAM Tirta Asasta Depok</a>
+        <div class="flex items-center gap-2 sm:gap-4">
+          <span class="text-[10px] sm:text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full whitespace-nowrap"><%= user.role %></span>
+          <span class="text-xs sm:text-sm text-gray-600 truncate max-w-[100px] sm:max-w-none"><%= user.nama_lengkap %></span>
+          <a href="/logout" class="text-xs sm:text-sm text-red-500 hover:text-red-700 whitespace-nowrap">Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6">
+      <h2 class="text-xl font-semibold text-gray-800">Data Pelanggan</h2>
+      <a href="/dashboard" class="text-sm text-blue-600 hover:text-blue-800">← Kembali</a>
+    </div>
+
+    <form class="mb-6 flex flex-col md:flex-row gap-2 relative" method="GET" action="/customers">
+      <input type="text" name="search" placeholder="Cari nama atau nomor sambung..." value="<%= search %>"
+        class="w-full md:flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+      <button type="submit" class="w-full md:w-auto px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">Cari</button>
+      <p class="text-xs text-gray-500 mt-1 md:absolute md:top-full md:left-0">
+        <%= message %>
+        <% if (search) { %>· <a href="/customers" class="text-blue-500 hover:underline">Reset</a><% } %>
+      </p>
+    </form>
+
+    <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-gray-50 border-b">
+            <tr>
+              <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase min-w-[120px] whitespace-nowrap">No. Sambung</th>
+              <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase min-w-[160px] whitespace-nowrap">Nama Pelanggan</th>
+              <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase min-w-[120px] whitespace-nowrap">Kecamatan</th>
+              <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase min-w-[100px] whitespace-nowrap">Golongan</th>
+              <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase min-w-[100px] whitespace-nowrap">Status</th>
+              <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase min-w-[80px] whitespace-nowrap">Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <% if (customers.length === 0) { %>
+              <tr><td colspan="6" class="px-4 py-8 text-center text-gray-400">Tidak ada data pelanggan</td></tr>
+            <% } %>
+            <% customers.forEach(function(c) { %>
+              <tr class="hover:bg-gray-50 transition">
+                <td class="px-4 py-3 text-sm font-mono min-w-[120px] whitespace-nowrap"><%= c.no_sambung %></td>
+                <td class="px-4 py-3 text-sm font-medium text-gray-800 min-w-[160px] whitespace-nowrap"><%= c.nama %></td>
+                <td class="px-4 py-3 text-sm text-gray-600 min-w-[120px] whitespace-nowrap"><%= c.kecamatan %></td>
+                <td class="px-4 py-3 min-w-[100px] whitespace-nowrap"><span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded whitespace-nowrap"><%= c.golongan %></span></td>
+                <td class="px-4 py-3 min-w-[100px]">
+                  <% if (c.status === 'aktif') { %>
+                    <span class="inline-block text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full whitespace-nowrap">Aktif</span>
+                  <% } else if (c.status === 'nonaktif') { %>
+                    <span class="inline-block text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full whitespace-nowrap">Nonaktif</span>
+                  <% } else { %>
+                    <span class="inline-block text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full whitespace-nowrap">Sementara</span>
+                  <% } %>
+                </td>
+                <td class="px-4 py-3 min-w-[80px] whitespace-nowrap"><a href="/customer/<%= c.id %>" class="text-sm text-blue-600 hover:text-blue-800">Detail →</a></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

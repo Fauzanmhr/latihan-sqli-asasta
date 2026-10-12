@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Pelanggan — PDAM Tirta Asasta Depok</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <nav class="bg-white shadow-sm border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="flex justify-between h-16 items-center gap-2">
+        <a href="/dashboard" class="text-sm sm:text-lg font-bold text-blue-800 truncate">PDAM Tirta Asasta Depok</a>
+        <div class="flex items-center gap-2 sm:gap-4 shrink-0">
+          <span class="hidden sm:inline text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full"><%= user.role %></span>
+          <span class="text-xs sm:text-sm text-gray-600 truncate max-w-[100px] sm:max-w-none"><%= user.nama_lengkap %></span>
+          <a href="/logout" class="text-xs sm:text-sm text-red-500 hover:text-red-700 whitespace-nowrap">Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-4xl mx-auto px-4 md:px-6 py-6">
+    <a href="/customers" class="text-sm text-blue-600 hover:text-blue-800 mb-4 sm:mb-6 inline-block">← Kembali ke data pelanggan</a>
+
+    <div class="bg-white rounded-xl shadow-sm border p-4 md:p-6 mb-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+        <div>
+          <h2 class="text-xl font-bold text-gray-800"><%= customer.nama %></h2>
+          <p class="text-sm text-gray-500">No. Sambung: <span class="font-mono"><%= customer.no_sambung %></span></p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <a href="/customer/<%= customer.id %>/edit" class="text-sm bg-blue-50 text-blue-600 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition whitespace-nowrap">✏️ Edit</a>
+          <% if (customer.status === 'aktif') { %>
+            <span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full">Aktif</span>
+          <% } else if (customer.status === 'nonaktif') { %>
+            <span class="text-xs bg-red-100 text-red-700 px-3 py-1 rounded-full">Nonaktif</span>
+          <% } else { %>
+            <span class="text-xs bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full">Sementara</span>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+        <div><p class="text-gray-500">Alamat</p><p class="font-medium"><%= customer.alamat %></p></div>
+        <div><p class="text-gray-500">Kecamatan</p><p class="font-medium"><%= customer.kecamatan %></p></div>
+        <div><p class="text-gray-500">Kelurahan</p><p class="font-medium"><%= customer.kelurahan %></p></div>
+        <div><p class="text-gray-500">Golongan</p><p class="font-medium"><%= customer.golongan %></p></div>
+      </div>
+    </div>
+
+    <h3 class="text-lg font-semibold text-gray-800 mb-3">Riwayat Tagihan</h3>
+    <div class="bg-white rounded-xl shadow-sm border overflow-x-auto">
+      <table class="w-full min-w-[640px]">
+        <thead class="bg-gray-50 border-b">
+          <tr>
+            <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Periode</th>
+            <th class="text-right px-4 py-3 text-xs font-medium text-gray-500 uppercase">Pemakaian (m³)</th>
+            <th class="text-right px-4 py-3 text-xs font-medium text-gray-500 uppercase">Tagihan</th>
+            <th class="text-right px-4 py-3 text-xs font-medium text-gray-500 uppercase">Denda</th>
+            <th class="text-center px-4 py-3 text-xs font-medium text-gray-500 uppercase">Status</th>
+            <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Aksi</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <% if (bills.length === 0) { %>
+            <tr><td colspan="6" class="px-4 py-8 text-center text-gray-400">Belum ada tagihan</td></tr>
+          <% } %>
+          <% bills.forEach(function(b) { %>
+            <tr class="hover:bg-gray-50">
+              <td class="px-4 py-3 text-sm whitespace-nowrap"><%= b.bulan %>/<%= b.tahun %></td>
+              <td class="px-4 py-3 text-sm text-right whitespace-nowrap"><%= b.pemakaian_m3 %></td>
+              <td class="px-4 py-3 text-sm text-right whitespace-nowrap">Rp <%= Number(b.tagihan).toLocaleString('id-ID') %></td>
+              <td class="px-4 py-3 text-sm text-right whitespace-nowrap <%= b.denda > 0 ? 'text-red-600' : '' %>"><%= b.denda > 0 ? 'Rp ' + Number(b.denda).toLocaleString('id-ID') : '-' %></td>
+              <td class="px-4 py-3 text-center whitespace-nowrap">
+                <% if (b.status_bayar === 'lunas') { %>
+                  <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Lunas</span>
+                <% } else if (b.status_bayar === 'denda') { %>
+                  <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full">Denda</span>
+                <% } else { %>
+                  <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full">Belum</span>
+                <% } %>
+              </td>
+              <td class="px-4 py-3 whitespace-nowrap"><a href="/bill/<%= b.id %>" class="text-sm text-blue-600 hover:text-blue-800">Detail</a> · <a href="/bill/<%= b.id %>/pay" class="text-sm text-green-600 hover:text-green-800">Bayar</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

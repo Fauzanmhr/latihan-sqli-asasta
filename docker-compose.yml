@@ -1,0 +1,39 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: pdam-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: pdam_tirta_asasta
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-uroot", "-proot", "--silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    container_name: pdam-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: pdam_tirta_asasta
+      PORT: 3000
+      SESSION_SECRET: pdam-sqli-demo-secret-2026
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
