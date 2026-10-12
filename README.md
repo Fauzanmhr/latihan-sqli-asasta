@@ -7,13 +7,23 @@
 > atau perusahaan mana pun. Semua nama, data, akun, dan kredensial di sini adalah **fiktif/contoh**.
 > Jangan gunakan kode ini untuk keperluan produksi atau aktivitas ilegal.
 
-REST API rentan SQL Injection untuk edukasi — sistem informasi pelanggan PDAM Tirta Asasta Depok (Perseroda).
+Aplikasi web rentan SQL Injection untuk edukasi — sistem informasi pelanggan PDAM Tirta Asasta Depok (Perseroda).
+
+Aplikasi ini punya **dua permukaan (surface)** yang keduanya rentan:
+
+1. **Web UI (server-rendered)** — halaman HTML dari EJS, auth pakai **session cookie** (`express-session`).
+   Route: `/`, `/login`, `/dashboard`, `/customers`, `/customer/:id`, `/customer/:id/edit`, `/bill/:id`, `/bill/:id/pay`, `/export`, `/meter`.
+2. **REST API (JSON)** — endpoint `/api/*`, auth pakai **Bearer token** (in-memory `Map`).
+   Untuk konsumsi program/mobile, bukan halaman.
+
+> Auth-nya juga terpisah: session untuk views, token untuk API. Keduanya memakai query SQL yang sama-sama rentan.
 
 ## Stack
 
 - **Backend**: Node.js + Express
+- **View**: EJS (server-side rendering)
 - **Database**: MySQL 8.0 (Docker)
-- **Auth**: Bearer Token (sederhana, in-memory)
+- **Auth**: Session cookie (views) + Bearer Token in-memory (API)
 
 ## Cara Menjalankan
 
@@ -29,7 +39,9 @@ node app.js                                              # jalankan API
 docker run -d --name pdam-mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=pdam_tirta_asasta -p 3306:3306 mysql:8.0
 ```
 
-## Endpoint API
+## Endpoint REST API (`/api/*`)
+
+> Halaman web (HTML) memakai route terpisah tanpa prefix `/api`, dengan auth session — lihat daftar di bagian atas.
 
 | Method | Endpoint | Auth | Keterangan |
 |--------|----------|------|------------|
