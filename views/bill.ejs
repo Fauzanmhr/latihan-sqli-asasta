@@ -63,7 +63,7 @@
           <% } %>
           <tr class="border-t font-bold">
             <td class="py-1.5 sm:py-2 text-gray-800">Total</td>
-            <td class="py-1.5 sm:py-2 text-right">Rp <%= Number(bill.tagihan + bill.denda).toLocaleString('id-ID') %></td>
+            <td class="py-1.5 sm:py-2 text-right">Rp <%= (Number(bill.tagihan) + Number(bill.denda)).toLocaleString('id-ID') %></td>
           </tr>
         </table>
       </div>
