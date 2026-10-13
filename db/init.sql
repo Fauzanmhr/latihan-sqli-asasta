@@ -1,10 +1,10 @@
 -- ============================================================
--- Database & Tabel untuk PDAM Tirta Asasta Depok (Perseroda)
+-- Database & Tabel untuk Perusahaan Air Minum Daerah
 -- Demo aplikasi — mengandung kerentanan SQL Injection
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS pdam_tirta_asasta;
-USE pdam_tirta_asasta;
+CREATE DATABASE IF NOT EXISTS pdam_db;
+USE pdam_db;
 
 -- Tabel users (pegawai/admin)
 CREATE TABLE IF NOT EXISTS users (
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS bills (
 );
 
 -- ============================================================
--- DATA SEED — tirta asasta depok
+-- DATA SEED
 -- ============================================================
 
 -- Users
@@ -65,7 +65,7 @@ INSERT INTO customers (no_sambung, nama, alamat, kecamatan, kelurahan, golongan,
 ('TA2023007', 'Dr. Andika Pratama', 'Vila Bintaro Indah Blok C5', 'Tapos', 'Cilodong', 'R3', 5500, 'aktif'),
 ('TA2023008', 'Masjid Al-Hidayah', 'Jl. Masjid No.1', 'Limo', 'Krukut', 'NI1', 5000, 'aktif'),
 ('TA2023009', 'Budi Santoso', 'Gg. Haji Romli No.8', 'Pancoran Mas', 'Pancoran Mas', 'R1', 2500, 'sementara'),
-('TA2023010', 'PDAM Tirta Asasta (Kantor Pusat)', 'Jl. Akses UI No.1', 'Beji', 'Kukusan', 'NI2', 4500, 'aktif');
+('TA2023010', 'Perusahaan Air Minum Daerah (Kantor Pusat)', 'Jl. Akses UI No.1', 'Beji', 'Kukusan', 'NI2', 4500, 'aktif');
 
 -- Bills (tagihan 3 bulan terakhir)
 INSERT INTO bills (customer_id, bulan, tahun, pemakaian_m3, tagihan, denda, status_bayar, tgl_bayar) VALUES

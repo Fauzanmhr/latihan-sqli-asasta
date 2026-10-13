@@ -1,7 +1,7 @@
-# PDAM Tirta Asasta Depok — Demo SQL Injection
+# Perusahaan Air Minum Daerah — Demo SQL Injection
 
 > ⚠️ **Hanya untuk pembelajaran.**
-> Proyek ini dibuat murni sebagai bahan latihan keamanan web (SQL Injection). Ini **bukan** aplikasi resmi, **bukan** produk, dan **tidak berafiliasi** dengan PDAM Tirta Asasta Depok atau perusahaan mana pun. Semua nama, data, akun, dan kredensial di sini adalah contoh/fiktif. Jangan dipakai di lingkungan produksi, dan jangan digunakan untuk aktivitas ilegal.
+> Proyek ini dibuat murni sebagai bahan latihan keamanan web (SQL Injection). Ini **bukan** aplikasi resmi, **bukan** produk, dan **tidak berafiliasi** dengan perusahaan mana pun. Semua nama, data, akun, dan kredensial di sini adalah contoh/fiktif. Jangan dipakai di lingkungan produksi, dan jangan digunakan untuk aktivitas ilegal.
 
 Ini aplikasi web sederhana berupa sistem informasi pelanggan PDAM. Semua celah SQL Injection di dalamnya **sengaja dibiarkan** supaya bisa dipelajari dan diuji langsung.
 
@@ -62,7 +62,7 @@ Butuh MySQL 8.0 yang sudah berjalan di mesin lokal.
 npm install
 
 # 2. Siapkan database (skema + data contoh)
-mysql -u root -proot pdam_tirta_asasta < db/init.sql
+mysql -u root -proot pdam_db < db/init.sql
 
 # 3. Jalankan aplikasi
 npm start
@@ -74,7 +74,7 @@ Kalau MySQL dijalankan sebagai container terpisah:
 ```bash
 docker run -d --name pdam-mysql \
   -e MYSQL_ROOT_PASSWORD=root \
-  -e MYSQL_DATABASE=pdam_tirta_asasta \
+  -e MYSQL_DATABASE=pdam_db \
   -p 3306:3306 \
   mysql:8.0
 ```
@@ -88,7 +88,7 @@ DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=root
-DB_NAME=pdam_tirta_asasta
+DB_NAME=pdam_db
 
 PORT=3000
 SESSION_SECRET=supersecretkey123

